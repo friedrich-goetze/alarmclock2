@@ -1,0 +1,5 @@
+(fp_lib_table
+  (lib (name __rs_pro_buzzer)(type KiCad)(uri ${KIPRJMOD}/__rs_pro_buzzer.pretty)(options "")(descr ""))
+  (lib (name __smd-handsolder)(type KiCad)(uri ${KIPRJMOD}/__smd-handsolder.pretty)(options "")(descr ""))
+  (lib (name __icd_clamp_conn)(type KiCad)(uri ${KIPRJMOD}/__icd_clamp_conn.pretty)(options "")(descr ""))
+)

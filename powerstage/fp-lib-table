@@ -1,0 +1,4 @@
+(fp_lib_table
+  (lib (name __smd-handsolder)(type KiCad)(uri ${KIPRJMOD}/__smd-handsolder.pretty)(options "")(descr ""))
+  (lib (name big-inductors)(type KiCad)(uri ${KIPRJMOD}/big-inductors.pretty)(options "")(descr ""))
+)

@@ -1,0 +1,51 @@
+output-dir=./out
+
+metric=1
+metricoutput=1
+spinup-time=5
+spindown-time=5
+tolerance=0.005
+
+#back=mcu-B_Cu.gbr
+#front=mcu-F_Cu.gbr
+outline=mcu-Edge_Cuts.gbr
+drill=mcu.drl
+
+# engraving
+zwork=-0.08
+zsafe=0.5
+mill-feed=300
+mill-vertfeed=100
+mill-speed=5000
+mill-diameters=0.2
+
+# drilling
+zdrill=-3.0
+zchange=100
+drill-feed=100
+drill-speed=24000
+onedrill=1
+
+# outline
+cutter-diameter=0.8
+zcut=-5
+cut-infeed=120
+cut-feed=120
+cut-speed=24000
+cut-vertfeed=100
+# ? fill-outline ...
+
+# bridges
+bridges=1
+bridgesnum=2
+
+# autoleveler
+software=linuxcnc
+al-back=1
+al-front=1
+al-x=10
+al-y=10
+al-probefeed=10
+
+# Edge_Cuts.gbr
+# PTH.drl

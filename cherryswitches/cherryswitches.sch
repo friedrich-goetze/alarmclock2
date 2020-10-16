@@ -1,0 +1,304 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L Switch:SW_Push SW_MODE1
+U 1 1 5F88D7BE
+P 2700 2000
+F 0 "SW_MODE1" H 2700 2285 50  0000 C CNN
+F 1 "SW_Push" H 2700 2194 50  0000 C CNN
+F 2 "Button_Switch_Keyboard:SW_Cherry_MX_1.00u_Plate" H 2700 2200 50  0001 C CNN
+F 3 "~" H 2700 2200 50  0001 C CNN
+	1    2700 2000
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_Push SW_SET1
+U 1 1 5F88E78A
+P 2700 2500
+F 0 "SW_SET1" H 2700 2785 50  0000 C CNN
+F 1 "SW_Push" H 2700 2694 50  0000 C CNN
+F 2 "Button_Switch_Keyboard:SW_Cherry_MX_1.00u_Plate" H 2700 2700 50  0001 C CNN
+F 3 "~" H 2700 2700 50  0001 C CNN
+	1    2700 2500
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_Push SW_INC1
+U 1 1 5F890596
+P 2700 3000
+F 0 "SW_INC1" H 2700 3285 50  0000 C CNN
+F 1 "SW_Push" H 2700 3194 50  0000 C CNN
+F 2 "Button_Switch_Keyboard:SW_Cherry_MX_1.00u_Plate" H 2700 3200 50  0001 C CNN
+F 3 "~" H 2700 3200 50  0001 C CNN
+	1    2700 3000
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_Push SW_DEC1
+U 1 1 5F8905DE
+P 2700 3500
+F 0 "SW_DEC1" H 2700 3785 50  0000 C CNN
+F 1 "SW_Push" H 2700 3694 50  0000 C CNN
+F 2 "Button_Switch_Keyboard:SW_Cherry_MX_1.00u_Plate" H 2700 3700 50  0001 C CNN
+F 3 "~" H 2700 3700 50  0001 C CNN
+	1    2700 3500
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR0101
+U 1 1 5F892617
+P 1750 1500
+F 0 "#PWR0101" H 1750 1350 50  0001 C CNN
+F 1 "+5V" H 1765 1673 50  0000 C CNN
+F 2 "" H 1750 1500 50  0001 C CNN
+F 3 "" H 1750 1500 50  0001 C CNN
+	1    1750 1500
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1750 1500 1750 2000
+Wire Wire Line
+	1750 3500 2500 3500
+Wire Wire Line
+	2500 3000 1750 3000
+Connection ~ 1750 3000
+Wire Wire Line
+	1750 3000 1750 3500
+Wire Wire Line
+	2500 2500 1750 2500
+Connection ~ 1750 2500
+Wire Wire Line
+	1750 2500 1750 3000
+Wire Wire Line
+	2500 2000 1750 2000
+Connection ~ 1750 2000
+Wire Wire Line
+	1750 2000 1750 2500
+$Comp
+L Device:R R1
+U 1 1 5F893CF3
+P 3250 3900
+F 0 "R1" H 3320 3946 50  0000 L CNN
+F 1 "10K" H 3320 3855 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" V 3180 3900 50  0001 C CNN
+F 3 "~" H 3250 3900 50  0001 C CNN
+	1    3250 3900
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R2
+U 1 1 5F8956D5
+P 3500 3900
+F 0 "R2" H 3570 3946 50  0000 L CNN
+F 1 "10K" H 3570 3855 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" V 3430 3900 50  0001 C CNN
+F 3 "~" H 3500 3900 50  0001 C CNN
+	1    3500 3900
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R3
+U 1 1 5F895B12
+P 3750 3900
+F 0 "R3" H 3820 3946 50  0000 L CNN
+F 1 "10K" H 3820 3855 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" V 3680 3900 50  0001 C CNN
+F 3 "~" H 3750 3900 50  0001 C CNN
+	1    3750 3900
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R4
+U 1 1 5F895FED
+P 4000 3900
+F 0 "R4" H 4070 3946 50  0000 L CNN
+F 1 "10K" H 4070 3855 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" V 3930 3900 50  0001 C CNN
+F 3 "~" H 4000 3900 50  0001 C CNN
+	1    4000 3900
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3250 3750 3250 2000
+Wire Wire Line
+	3250 2000 2900 2000
+Wire Wire Line
+	2900 2500 3500 2500
+Wire Wire Line
+	3500 2500 3500 3750
+Wire Wire Line
+	2900 3000 3750 3000
+Wire Wire Line
+	3750 3000 3750 3750
+Wire Wire Line
+	4000 3750 4000 3500
+Wire Wire Line
+	4000 3500 2900 3500
+$Comp
+L power:GND #PWR0102
+U 1 1 5F8970ED
+P 3250 4500
+F 0 "#PWR0102" H 3250 4250 50  0001 C CNN
+F 1 "GND" H 3255 4327 50  0000 C CNN
+F 2 "" H 3250 4500 50  0001 C CNN
+F 3 "" H 3250 4500 50  0001 C CNN
+	1    3250 4500
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3250 4500 3250 4250
+Wire Wire Line
+	3250 4250 3500 4250
+Wire Wire Line
+	4000 4250 4000 4050
+Wire Wire Line
+	3750 4050 3750 4250
+Connection ~ 3750 4250
+Wire Wire Line
+	3750 4250 4000 4250
+Wire Wire Line
+	3500 4050 3500 4250
+Connection ~ 3500 4250
+Wire Wire Line
+	3500 4250 3750 4250
+Wire Wire Line
+	3250 4050 3250 4250
+Connection ~ 3250 4250
+Wire Wire Line
+	4250 3500 4000 3500
+Connection ~ 4000 3500
+Wire Wire Line
+	4250 3000 3750 3000
+Connection ~ 3750 3000
+Wire Wire Line
+	4250 2500 3500 2500
+Connection ~ 3500 2500
+Wire Wire Line
+	4250 2000 3250 2000
+Connection ~ 3250 2000
+Text Label 4250 2000 0    50   ~ 0
+MODE
+Text Label 4250 2500 0    50   ~ 0
+SET
+Text Label 4250 3000 0    50   ~ 0
+INC
+Text Label 4250 3500 0    50   ~ 0
+DEC
+$Comp
+L power:+5V #PWR0103
+U 1 1 5F89BB06
+P 5000 2250
+F 0 "#PWR0103" H 5000 2100 50  0001 C CNN
+F 1 "+5V" H 5015 2423 50  0000 C CNN
+F 2 "" H 5000 2250 50  0001 C CNN
+F 3 "" H 5000 2250 50  0001 C CNN
+	1    5000 2250
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR0104
+U 1 1 5F89C6B7
+P 8250 3000
+F 0 "#PWR0104" H 8250 2750 50  0001 C CNN
+F 1 "GND" H 8255 2827 50  0000 C CNN
+F 2 "" H 8250 3000 50  0001 C CNN
+F 3 "" H 8250 3000 50  0001 C CNN
+	1    8250 3000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8250 3000 8250 2500
+Wire Wire Line
+	8250 2500 6750 2500
+Wire Wire Line
+	5250 2500 5000 2500
+Wire Wire Line
+	5000 2500 5000 2250
+Text Label 5250 2750 2    50   ~ 0
+MODE
+Text Label 6750 2750 0    50   ~ 0
+SET
+Text Label 5250 3000 2    50   ~ 0
+INC
+Text Label 6750 3000 0    50   ~ 0
+DEC
+$Comp
+L Connector_Generic:Conn_01x01 J1
+U 1 1 5F8ABBD9
+P 5450 2500
+F 0 "J1" H 5530 2542 50  0000 L CNN
+F 1 "Conn_01x01" H 5530 2451 50  0000 L CNN
+F 2 "Connector_Wire:SolderWirePad_1x01_SMD_5x10mm" H 5450 2500 50  0001 C CNN
+F 3 "~" H 5450 2500 50  0001 C CNN
+	1    5450 2500
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x01 J2
+U 1 1 5F8AE2D5
+P 5450 2750
+F 0 "J2" H 5530 2792 50  0000 L CNN
+F 1 "Conn_01x01" H 5530 2701 50  0000 L CNN
+F 2 "Connector_Wire:SolderWirePad_1x01_SMD_5x10mm" H 5450 2750 50  0001 C CNN
+F 3 "~" H 5450 2750 50  0001 C CNN
+	1    5450 2750
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x01 J3
+U 1 1 5F8AE5AA
+P 5450 3000
+F 0 "J3" H 5530 3042 50  0000 L CNN
+F 1 "Conn_01x01" H 5530 2951 50  0000 L CNN
+F 2 "Connector_Wire:SolderWirePad_1x01_SMD_5x10mm" H 5450 3000 50  0001 C CNN
+F 3 "~" H 5450 3000 50  0001 C CNN
+	1    5450 3000
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x01 J6
+U 1 1 5F8B03BB
+P 6550 3000
+F 0 "J6" H 6630 3042 50  0000 L CNN
+F 1 "Conn_01x01" H 6630 2951 50  0000 L CNN
+F 2 "Connector_Wire:SolderWirePad_1x01_SMD_5x10mm" H 6550 3000 50  0001 C CNN
+F 3 "~" H 6550 3000 50  0001 C CNN
+	1    6550 3000
+	-1   0    0    1   
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x01 J5
+U 1 1 5F8B04D1
+P 6550 2750
+F 0 "J5" H 6630 2792 50  0000 L CNN
+F 1 "Conn_01x01" H 6630 2701 50  0000 L CNN
+F 2 "Connector_Wire:SolderWirePad_1x01_SMD_5x10mm" H 6550 2750 50  0001 C CNN
+F 3 "~" H 6550 2750 50  0001 C CNN
+	1    6550 2750
+	-1   0    0    1   
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x01 J4
+U 1 1 5F8B04DB
+P 6550 2500
+F 0 "J4" H 6630 2542 50  0000 L CNN
+F 1 "Conn_01x01" H 6630 2451 50  0000 L CNN
+F 2 "Connector_Wire:SolderWirePad_1x01_SMD_5x10mm" H 6550 2500 50  0001 C CNN
+F 3 "~" H 6550 2500 50  0001 C CNN
+	1    6550 2500
+	-1   0    0    1   
+$EndComp
+$EndSCHEMATC

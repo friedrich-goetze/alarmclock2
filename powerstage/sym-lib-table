@@ -1,0 +1,5 @@
+(sym_lib_table
+  (lib (name __lt1934)(type Legacy)(uri ${KIPRJMOD}/__lt1934.lib)(options "")(descr ""))
+  (lib (name __si4532)(type Legacy)(uri ${KIPRJMOD}/__si4532.lib)(options "")(descr ""))
+  (lib (name powerstage-rescue)(type Legacy)(uri ${KIPRJMOD}/powerstage-rescue.lib)(options "")(descr ""))
+)

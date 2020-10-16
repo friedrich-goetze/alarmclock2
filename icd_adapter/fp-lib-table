@@ -1,0 +1,4 @@
+(fp_lib_table
+  (lib (name 6p6c)(type KiCad)(uri ${KIPRJMOD}/6p6c.pretty)(options "")(descr ""))
+  (lib (name __6p6c)(type KiCad)(uri ${KIPRJMOD}/__6p6c.pretty)(options "")(descr ""))
+)

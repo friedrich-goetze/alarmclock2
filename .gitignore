@@ -24,3 +24,7 @@ fp-info-cache
 # Exported BOM files
 *.xml
 *.csv
+/alarmclock2pic.X/build/
+/alarmclock2pic.X/dist/
+
+**/gerber/**
