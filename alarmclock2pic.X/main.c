@@ -8,6 +8,7 @@
 #include "buttons.h"
 #include "ui.h"
 #include "alarm.h"
+#include "persistance.h"
 
 void main(void) {
     // initialize the device
@@ -31,18 +32,21 @@ void main(void) {
     printf("Hello!\n");
 
     //    LCD_Init();
+    PERSISTANCE_Init();
     LCD_Init();
     BTN_Init();
     ALARM_Init();
     UI_Init();
     SCHEDULE_Init();
 
+
+
     //    SCHEDULE_AddTask(LCD_Task);
     SCHEDULE_AddTask(BTN_Update);
     SCHEDULE_AddTask(ALARM_Update);
     SCHEDULE_AddTask(UI_Update);
     SCHEDULE_AddTask(LCD_Task);
-
+    SCHEDULE_AddTask(PERSISTANCE_Update);
     SCHEDULE_Run();
 }
 /**

@@ -49,6 +49,8 @@ void SCHEDULE_Run() {
     uint16_t waitUntilNext;
 
     while (1) {
+        while (!EUSART1_is_tx_ready());
+        EUSART1_Write('t');
         minWaitUntilNext = (uint16_t) 0xFFFF;
         for (i = 0; i < nTasks; i++) {
             pT = allTasks[i];
@@ -77,6 +79,7 @@ void SCHEDULE_Run() {
                 waitSinceLast = SCHEDULE_API_WaitTicks(minWaitUntilNext);
                 break;
         }
+        interrupted = false;
     }
 }
 

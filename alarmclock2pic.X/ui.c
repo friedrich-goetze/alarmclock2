@@ -7,6 +7,7 @@
 #include "simpletime.h"
 #include "lcd_driver.h"
 #include "mcc_generated_files/tmr0.h"
+#include "persistance.h"
 
 #define UI_HOME 0
 #define UI_SET_BIT (0b1)
@@ -29,7 +30,7 @@ typedef struct __UI_Data {
 
 } UI_Data;
 
-#define TIMEOUT (0x7500)
+#define TIMEOUT ((uint16_t)0x7500)
 uint16_t lastPressMillis = 0;
 
 UI_Data ui;
@@ -42,6 +43,8 @@ void UI_Init() {
     ui.mode = UI_HOME;
     ui.setStep = UI_SETSTEP_SELECT;
 }
+
+uint8_t UI_IncDecRanged(bool inc, uint8_t value, uint8_t amount, uint8_t max);
 
 uint16_t UI_Update(uint16_t ticksSinceLastCall) {
     // Gather data from environment.
@@ -116,6 +119,9 @@ uint16_t UI_Update(uint16_t ticksSinceLastCall) {
                             ALARM_SetTime(&newUI.almTime);
                             break;
                     }
+
+                    PERSISTANCE_WriteState();
+
                     newUI.mode = UI_HOME;
                 }
 
@@ -129,17 +135,26 @@ uint16_t UI_Update(uint16_t ticksSinceLastCall) {
                         ? &newUI.dayTime
                         : &newUI.almTime;
 
-                int8_t add = (btn == BTN_INC) ? +1 : -1;
+                bool inc = (btn == BTN_INC);
+                uint8_t maxDigit;
+                uint8_t minDigit;
 
                 switch (newUI.setStep) {
                     case UI_SETSTEP_HOURS:
-                        pEdit->hours += add;
+                        pEdit->hours = UI_IncDecRanged(inc, pEdit->hours, 1, 24);
                         break;
                     case UI_SETSTEP_TEN_MINUTES:
-                        pEdit->minutes += add * 10;
-                        break;
                     case UI_SETSTEP_MINUTES:
-                        pEdit->minutes += add;
+                        maxDigit = pEdit->minutes / 10;
+                        minDigit = pEdit->minutes % 10;
+
+                        if (newUI.setStep == UI_SETSTEP_TEN_MINUTES) {
+                            maxDigit = UI_IncDecRanged(inc, maxDigit, 1, 6);
+                        } else {
+                            minDigit = UI_IncDecRanged(inc, minDigit, 1, 10);
+                        }
+
+                        pEdit->minutes = maxDigit * 10 + minDigit;
                         break;
                 }
 
@@ -248,4 +263,13 @@ uint16_t UI_Update(uint16_t ticksSinceLastCall) {
 
     // Wait forever if is in home, otherwise wait a second to re-check timeout.
     return (newUI.mode == UI_HOME) ? 0xFFFF : 0x7FFF;
+}
+
+uint8_t UI_IncDecRanged(bool inc, uint8_t value, uint8_t amount, uint8_t max) {
+    if (inc) {
+        uint8_t r = value + amount;
+        return (r < max) ? r : r % max;
+    } else {
+        return (value >= amount) ? value - amount : max - (amount - value);
+    }
 }
