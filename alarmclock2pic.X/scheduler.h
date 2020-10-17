@@ -29,6 +29,7 @@ void SCHEDULE_API_OnInterrupt(void);
 void SCHEDULE_AddTask(uint16_t (*pTask)(uint16_t));
 
 void SCHEDULE_Init(void);
+void SCHEDULE_OnInterrupt(void);
 void SCHEDULE_Run(void);
 
 #endif	/* __MF_SCHEDULER__ */

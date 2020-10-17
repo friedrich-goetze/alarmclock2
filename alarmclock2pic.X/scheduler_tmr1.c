@@ -18,29 +18,31 @@ void SCHEDULE_API_InitWaitTicks() {
 }
 
 uint16_t SCHEDULE_API_WaitTicks(uint16_t ticks) {
-    if(ticks <= TMR1_POLL) {
-        TMR1_WriteTimer((uint16_t)0);
+    if (ticks <= TMR1_POLL) {
+        TMR1_WriteTimer((uint16_t) 0);
         TMR1_StartTimer();
-        while(TMR1_ReadTimer() < ticks && !interrupted);
+        while (TMR1_ReadTimer() < ticks && !interrupted);
         TMR1_StopTimer();
-        
+
         interrupted = false;
-        
+
         return TMR1_ReadTimer();
     } else {
         uint16_t w = (ticks > TMR1_MAXWAIT) ? TMR1_MAXWAIT : ticks;
         w--; // Wait one tick less too correct waiting
-        uint16_t period = (uint16_t)0xFFFF - w;
+        uint16_t period = (uint16_t) 0xFFFF - w;
         // Fix in PIC-bug: SLEEP fails when transmitting USART data
         TMR1_WriteTimer(period);
         TMR1_StartTimer();
-        while(!EUSART1_is_tx_ready() || !EUSART1_is_tx_done());
-        SLEEP();
-        NOP();
+        while (!EUSART1_is_tx_ready() || !EUSART1_is_tx_done());
+        if (!interrupted) {
+            SLEEP();
+            NOP();
+        }
         TMR1_StopTimer();
-        
+
         interrupted = false;
-        
+
         return TMR1_ReadTimer() - period;
     }
 }

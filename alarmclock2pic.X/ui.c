@@ -6,6 +6,7 @@
 #include "mcc_generated_files/rtcc.h"
 #include "simpletime.h"
 #include "lcd_driver.h"
+#include "mcc_generated_files/tmr0.h"
 
 #define UI_HOME 0
 #define UI_SET_BIT (0b1)
@@ -28,6 +29,9 @@ typedef struct __UI_Data {
 
 } UI_Data;
 
+#define TIMEOUT (0x7500)
+uint16_t lastPressMillis = 0;
+
 UI_Data ui;
 struct tm rtcc;
 
@@ -44,6 +48,7 @@ uint16_t UI_Update(uint16_t ticksSinceLastCall) {
     bool isAlarmActive = ALARM_IsActive();
     bool isAlarmEnabled = ALARM_IsEnabled();
     uint8_t btn = BTN_GetDownButton();
+    uint16_t curMillis = TMR0_ReadTimer();
     RTCC_TimeGet(&rtcc);
 
     // Create a copy to check, if anything has changed that requires a redraw.
@@ -146,8 +151,14 @@ uint16_t UI_Update(uint16_t ticksSinceLastCall) {
     if (newUI.mode == UI_HOME) {
         SIMPLETIME_FromTime(&rtcc, &newUI.dayTime);
         ALARM_GetTime(&newUI.almTime);
+
+    } else if (BTN_IsButtonPressed()) {
+        // Reset Timeout
+        lastPressMillis = curMillis;
+    } else if (curMillis - lastPressMillis > TIMEOUT) {
+        // Timeout
+        newUI.mode = UI_HOME;
     }
-    
     // Fix any severe errors which shouldn't exist
     newUI.dayTime.hours %= 24;
     newUI.dayTime.minutes %= 60;
@@ -195,7 +206,7 @@ uint16_t UI_Update(uint16_t ticksSinceLastCall) {
         if (newUI.mode == UI_SET_ALM) {
             memcpy(lcd + 0x1D, "SET", 3);
         }
-        
+
         // Write Text
         LCD_PushBuffer();
 
@@ -221,15 +232,20 @@ uint16_t UI_Update(uint16_t ticksSinceLastCall) {
                         pos,
                         LCD_CURSOR_SOLID
                         );
+            } else {
+                LCD_ShowCursor(0, 0, LCD_CURSOR_OFF);
             }
-        } else if(newUI.mode == UI_ENABLE_ALM) {
+        } else if (newUI.mode == UI_ENABLE_ALM) {
             LCD_ShowCursor(
-                        1,
-                        0x4,
-                        LCD_CURSOR_SOLID
-                        );
+                    1,
+                    0x4,
+                    LCD_CURSOR_SOLID
+                    );
+        } else {
+            LCD_ShowCursor(0, 0, LCD_CURSOR_OFF);
         }
     }
 
-    return 0xFFFF;
+    // Wait forever if is in home, otherwise wait a second to re-check timeout.
+    return (newUI.mode == UI_HOME) ? 0xFFFF : 0x7FFF;
 }

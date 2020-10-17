@@ -133,6 +133,7 @@ const LCD_CmdDef cmdDefs[] = {
 };
 
 char chBuf[LCD_TOTAL_CHARS];
+char lastChBuf[LCD_TOTAL_CHARS];
 
 LCD_Command cmds[LCD_N_COMMANDS];
 uint8_t curCmd = 0;
@@ -145,6 +146,8 @@ uint8_t mcpTransfer[2];
 uint16_t ticksUntilNextCmd = 0;
 uint16_t initTicksUntilNextCmd = 0;
 
+uint8_t cursorMode = LCD_CURSOR_OFF;
+
 void LCD_PushCommand(uint8_t cmd, uint8_t data);
 void LCD_ClearCommands(void);
 void LCD_ClockCommand(void);
@@ -152,7 +155,10 @@ void LCD_SendMcpBuf(void);
 
 void LCD_Init() {
     memset(chBuf, ' ', sizeof (chBuf));
+    memset(lastChBuf, ' ', sizeof (lastChBuf));
     memset(cmds, 0, sizeof (cmds));
+
+    cursorMode = LCD_CURSOR_OFF;
 
     // Both output
     mcpTransfer[0] = 0;
@@ -245,27 +251,35 @@ char* LCD_TakeBuffer() {
 }
 
 void LCD_PushBuffer() {
-    // First, disable cursort
-    LCD_ShowCursor(0, 0, LCD_CURSOR_OFF);
-
     // Cleanup existing commands
     LCD_ClearCommands();
-    
+
     uint8_t ddStartAddr = 0;
-    char* pCh = chBuf;
-    for (uint8_t l = LCD_ROWS; l; l--) {
-        LCD_PushCommand(LCD_CMD_SET_DDRAM_ADDR, ddStartAddr);
+    uint8_t j;
+    uint8_t addr = 0;
+    bool sendAddr = true;
 
-        for (uint8_t s = LCD_COLS; s; s--) {
-            LCD_PushCommand(LCD_CMD_WRITE_DATA, *pCh);
-            pCh++;
+    for (uint8_t i = 0; i < LCD_TOTAL_CHARS; i++) {
+        if (lastChBuf[i] == chBuf[i]) {
+            sendAddr = true;
+            continue;
         }
-
-        // Goto next line in lcd memory
-        ddStartAddr += 0x40;
+        if (sendAddr) {
+            addr = 0;
+            j = i;
+            while (j >= LCD_COLS) {
+                addr += 0x40;
+                j -= LCD_COLS;
+            }
+            addr += j; // Remainder
+            LCD_PushCommand(LCD_CMD_SET_DDRAM_ADDR, addr);
+            sendAddr = false;
+        }
+        LCD_PushCommand(LCD_CMD_WRITE_DATA, chBuf[i]);
     }
-    
-    memset(chBuf, ' ', sizeof(chBuf));
+
+    memcpy(lastChBuf, chBuf, sizeof (chBuf));
+    memset(chBuf, ' ', sizeof (chBuf));
 }
 
 void LCD_ShowCursor(uint8_t row, uint8_t col, uint8_t mode) {
@@ -279,15 +293,19 @@ void LCD_ShowCursor(uint8_t row, uint8_t col, uint8_t mode) {
         LCD_PushCommand(LCD_CMD_SET_DDRAM_ADDR, row * 0x40 + col);
     }
 
-    uint8_t m = LCD_CMD_DISPLAY_CTRL_DISP_ON;
-    if (mode) {
-        m |= LCD_CMD_DISPLAY_CTRL_CURSOR_ON;
-        if (mode == LCD_CURSOR_BLINKING) {
-            m |= LCD_CMD_DISPLAY_CTRL_BLINK_ON;
+    if (mode != cursorMode) {
+        uint8_t m = LCD_CMD_DISPLAY_CTRL_DISP_ON;
+        if (mode) {
+            m |= LCD_CMD_DISPLAY_CTRL_CURSOR_ON;
+            if (mode == LCD_CURSOR_BLINKING) {
+                m |= LCD_CMD_DISPLAY_CTRL_BLINK_ON;
+            }
         }
+
+        LCD_PushCommand(LCD_CMD_DISPLAY_CTRL, m);
     }
 
-    LCD_PushCommand(LCD_CMD_DISPLAY_CTRL, m);
+    cursorMode = mode;
 }
 
 void LCD_EnableBgLed(bool enable) {

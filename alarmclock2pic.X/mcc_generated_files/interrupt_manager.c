@@ -77,7 +77,7 @@ void __interrupt() INTERRUPT_InterruptManager (void)
         //Unhandled Interrupt
     }
     
-    SCHEDULE_API_OnInterrupt();
+    SCHEDULE_OnInterrupt();
 }
 /**
  End of File
