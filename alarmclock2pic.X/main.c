@@ -6,9 +6,9 @@
 #include "usart_util.h"
 #include "mcp23s17.h"
 #include "buttons.h"
-/*
-                         Main application
- */
+#include "ui.h"
+#include "alarm.h"
+
 void main(void) {
     // initialize the device
     SYSTEM_Initialize();
@@ -27,32 +27,20 @@ void main(void) {
 
     // Disable the Peripheral Interrupts
     //INTERRUPT_PeripheralInterruptDisable();
-    
+
     printf("Hello!\n");
-    
-//    LCD_Init();
+
+    //    LCD_Init();
     LCD_Init();
     BTN_Init();
-    LCD_EnableBgLed(true);
-    
-    char* p = LCD_TakeBuffer();
-    memcpy(p + LCD_COLS, "abcdefghijklmnop", 16);
-    memcpy(p, "ABCDEFGJHIKLMNOP", 16);
-    LCD_PushBuffer();
-    
-    LCD_ShowCursor(0, 6, LCD_CURSOR_BLINKING);
-    
-    
-    p = LCD_TakeBuffer();
-    memcpy(p + LCD_COLS, "1234567890987654", 16);
-    memcpy(p, "0987654312345678", 16);
-    LCD_PushBuffer();
-    
-    
+    ALARM_Init();
+    UI_Init();
     SCHEDULE_Init();
-        
-//    SCHEDULE_AddTask(LCD_Task);
+
+    //    SCHEDULE_AddTask(LCD_Task);
     SCHEDULE_AddTask(BTN_Update);
+    SCHEDULE_AddTask(ALARM_Update);
+    SCHEDULE_AddTask(UI_Update);
     SCHEDULE_AddTask(LCD_Task);
 
     SCHEDULE_Run();

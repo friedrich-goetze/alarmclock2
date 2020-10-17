@@ -151,7 +151,7 @@ void LCD_ClockCommand(void);
 void LCD_SendMcpBuf(void);
 
 void LCD_Init() {
-    memset(chBuf, 'x', sizeof (chBuf));
+    memset(chBuf, ' ', sizeof (chBuf));
     memset(cmds, 0, sizeof (cmds));
 
     // Both output

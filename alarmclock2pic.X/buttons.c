@@ -29,6 +29,8 @@ void BTN_Init() {
 }
 
 uint16_t BTN_Update(uint16_t ticksSinceLastCall) {
+    curButtonJustPressed = false; // This is enabled only for one tick
+    
     if (isDebounce) {
         uint16_t t = TMR0_ReadTimer();
         uint16_t d = t - debounceStartMillis;
@@ -45,18 +47,11 @@ uint16_t BTN_Update(uint16_t ticksSinceLastCall) {
 
     uint8_t bits = BTN_CreateBits();
 
-    uint8_t action = 0;
-
     if (curButton) {
-        // Pressed button
-        // BTN_Update called second time. This button is down but no longer pressed.
-        curButtonJustPressed = false;
-
         if (!(bits & curButton)) {
             // Button is up, release it
             curButton = BTN_NONE;
             BTN_StartDebounce(50);
-            action = 1;
         }
     } else if (bits) {
         // A button is down, find out which one.
@@ -73,32 +68,19 @@ uint16_t BTN_Update(uint16_t ticksSinceLastCall) {
 
         curButtonJustPressed = true;
         BTN_StartDebounce(50);
-        action = 1;
-    }
-
-    if (action) {
-        char* lcd = LCD_TakeBuffer();
-        uint8_t ch = '0';
-        switch (curButton) {
-            case BTN_MODE: ch = 'm';
-                break;
-            case BTN_SET: ch = 's';
-                break;
-            case BTN_INC: ch = 'i';
-                break;
-            case BTN_DEC: ch = 'd';
-                break;
-        }
-        lcd[LCD_TOTAL_CHARS - 1] = ch;
-        LCD_PushBuffer();
     }
 
     // Can wait forever, since interrupt will wake up scheduler anyway
     return (isDebounce) ? 0 : 0xFFFF;
 }
 
-bool BTN_IsDown(uint8_t id);
-bool BTN_IsPressed(uint8_t id);
+uint8_t BTN_GetDownButton() {
+    return curButton;
+}
+
+bool BTN_IsButtonPressed(void) {
+    return curButtonJustPressed;
+}
 
 void BTN_StartDebounce(uint16_t millis) {
     isDebounce = true;

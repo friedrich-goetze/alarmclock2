@@ -12,8 +12,8 @@
 void BTN_Init(void);
 uint16_t BTN_Update(uint16_t ticksSinceLastCall);
 
-bool BTN_IsDown(uint8_t id);
-bool BTN_IsPressed(uint8_t id);
+uint8_t BTN_GetDownButton(void);
+bool BTN_IsButtonPressed(void);
 
 #endif	/* XC_HEADER_TEMPLATE_H */
 

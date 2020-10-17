@@ -12,7 +12,7 @@
 
 #define LCD_CURSOR_OFF 0
 #define LCD_CURSOR_SOLID 1
-#define LCD_CURSOR_BLINKING 1
+#define LCD_CURSOR_BLINKING 2
 
 void LCD_Init();
 uint16_t LCD_Task(uint16_t);

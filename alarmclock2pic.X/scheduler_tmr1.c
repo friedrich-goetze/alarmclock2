@@ -18,7 +18,7 @@ void SCHEDULE_API_InitWaitTicks() {
 }
 
 uint16_t SCHEDULE_API_WaitTicks(uint16_t ticks) {
-    if(ticks <= TMR1_POLL || true) {
+    if(ticks <= TMR1_POLL) {
         TMR1_WriteTimer((uint16_t)0);
         TMR1_StartTimer();
         while(TMR1_ReadTimer() < ticks && !interrupted);
