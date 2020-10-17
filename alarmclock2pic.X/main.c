@@ -5,14 +5,7 @@
 #include "lcd_driver.h"
 #include "usart_util.h"
 #include "mcp23s17.h"
-
-uint8_t x = 0;
-
-uint16_t task(uint16_t duration) {
-        x++;
-        printf("oo %u -> %u\n", x, duration);
-    return (uint16_t)0x7FFF;
-}
+#include "buttons.h"
 /*
                          Main application
  */
@@ -35,20 +28,31 @@ void main(void) {
     // Disable the Peripheral Interrupts
     //INTERRUPT_PeripheralInterruptDisable();
     
+    printf("Hello!\n");
+    
 //    LCD_Init();
     LCD_Init();
+    BTN_Init();
     LCD_EnableBgLed(true);
     
-    LCD_Buffer* p = LCD_TakeBuffer();
-    strcpy(p->rows[0], "Hello world");
-    strcpy(p->rows[1], "Foo Bar");
+    char* p = LCD_TakeBuffer();
+    memcpy(p + LCD_COLS, "abcdefghijklmnop", 16);
+    memcpy(p, "ABCDEFGJHIKLMNOP", 16);
     LCD_PushBuffer();
     
     LCD_ShowCursor(0, 6, LCD_CURSOR_BLINKING);
     
+    
+    p = LCD_TakeBuffer();
+    memcpy(p + LCD_COLS, "1234567890987654", 16);
+    memcpy(p, "0987654312345678", 16);
+    LCD_PushBuffer();
+    
+    
     SCHEDULE_Init();
         
 //    SCHEDULE_AddTask(LCD_Task);
+    SCHEDULE_AddTask(BTN_Update);
     SCHEDULE_AddTask(LCD_Task);
 
     SCHEDULE_Run();

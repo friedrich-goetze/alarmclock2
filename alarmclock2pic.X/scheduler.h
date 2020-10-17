@@ -10,6 +10,12 @@
 void SCHEDULE_API_InitWaitTicks(void);
 uint16_t SCHEDULE_API_WaitTicks(uint16_t ticks);
 
+/** 
+ * This must be called within any interrupt.
+ * This function interrupts waiting.
+ */
+void SCHEDULE_API_OnInterrupt(void);
+
 /**
  * Callback for task execution.
  * First parameter: Ticks since the last callback. If is 0xFF,

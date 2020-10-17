@@ -48,6 +48,7 @@
 
 #include "interrupt_manager.h"
 #include "mcc.h"
+#include "../scheduler.h"
 
 void __interrupt() INTERRUPT_InterruptManager (void)
 {
@@ -75,6 +76,8 @@ void __interrupt() INTERRUPT_InterruptManager (void)
     {
         //Unhandled Interrupt
     }
+    
+    SCHEDULE_API_OnInterrupt();
 }
 /**
  End of File

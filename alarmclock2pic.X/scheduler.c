@@ -1,6 +1,10 @@
 #include <xc.h>
 #include <string.h>
+#include <stdbool.h>
 #include "scheduler.h"
+
+#include "usart_util.h"
+#include "mcc_generated_files/eusart1.h"
 
 uint16_t __dummyTask(uint16_t x) {
     return 0;
@@ -51,6 +55,7 @@ void SCHEDULE_Run() {
                 waitSinceLast = (uint16_t) 0;
                 break;
             case (uint16_t) 0xFFFF:
+                while(!EUSART1_is_tx_ready() || !EUSART1_is_tx_done());
                 SLEEP();
                 NOP();
                 waitSinceLast = (uint16_t) 0xFFFF;

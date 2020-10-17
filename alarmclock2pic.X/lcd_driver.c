@@ -14,8 +14,7 @@
 #include "mcc_generated_files/device_config.h"
 #include "usart_util.h"
 
-#define LCD_N_BUFFERS 2
-#define LCD_N_COMMANDS 64
+#define LCD_N_COMMANDS 128
 
 #define LCD_INSTRUCTION_REG 0
 #define LCD_DATA_REGISTER 0b1
@@ -75,31 +74,31 @@ const LCD_CmdDef cmdDefs[] = {
         .isNoop = false,
         .isDataReg = false,
         .bitmask = 0b1,
-        .minTicks = (uint16_t) 49
+        .minTicks = (uint16_t) 50
     },
     { // 1 RETURN HOME
         .isNoop = false,
         .isDataReg = false,
         .bitmask = 0b10,
-        .minTicks = (uint16_t) 49
+        .minTicks = (uint16_t) 50
     },
     { // 2 ENTRY MODE SET
         .isNoop = false,
         .isDataReg = false,
         .bitmask = 0b100,
-        .minTicks = (uint16_t) 1
+        .minTicks = (uint16_t) 2
     },
     { // 3 DISPLAY CTRL
         .isNoop = false,
         .isDataReg = false,
         .bitmask = 0b1000,
-        .minTicks = (uint16_t) 1
+        .minTicks = (uint16_t) 2
     },
     { // 4 CURSOR_DISP_SHIFT
         .isNoop = false,
         .isDataReg = false,
         .bitmask = 0b10000,
-        .minTicks = (uint16_t) 1
+        .minTicks = (uint16_t) 2
     },
     { // 5 FUNC SET
         .isNoop = false,
@@ -111,19 +110,19 @@ const LCD_CmdDef cmdDefs[] = {
         .isNoop = false,
         .isDataReg = false,
         .bitmask = 0b1000000,
-        .minTicks = (uint16_t) 1
+        .minTicks = (uint16_t) 2
     },
     { // 7 SET DDRAM ADDR
         .isNoop = false,
         .isDataReg = false,
         .bitmask = 0b10000000,
-        .minTicks = (uint16_t) 1
+        .minTicks = (uint16_t) 2
     },
     { // 8 WRITE DATA
         .isNoop = false,
         .isDataReg = true,
         .bitmask = 0,
-        .minTicks = (uint16_t) 1
+        .minTicks = (uint16_t) 2
     },
     { // 9 INIT
         .isNoop = true,
@@ -133,8 +132,7 @@ const LCD_CmdDef cmdDefs[] = {
     }
 };
 
-LCD_Buffer chBufs[2];
-uint8_t curChBuf = 0;
+char chBuf[LCD_TOTAL_CHARS];
 
 LCD_Command cmds[LCD_N_COMMANDS];
 uint8_t curCmd = 0;
@@ -148,13 +146,13 @@ uint16_t ticksUntilNextCmd = 0;
 uint16_t initTicksUntilNextCmd = 0;
 
 void LCD_PushCommand(uint8_t cmd, uint8_t data);
+void LCD_ClearCommands(void);
 void LCD_ClockCommand(void);
 void LCD_SendMcpBuf(void);
 
 void LCD_Init() {
-    memset(&chBufs, 0, sizeof (chBufs));
+    memset(chBuf, 'x', sizeof (chBuf));
     memset(cmds, 0, sizeof (cmds));
-    curChBuf = 0;
 
     // Both output
     mcpTransfer[0] = 0;
@@ -218,7 +216,7 @@ uint16_t LCD_Task(uint16_t durationSinceLast) {
 
     // Get all command data
     LCD_Command* pCurCmd = &cmds[curCmd];
-    LCD_CmdDef* pCmdDef = &cmdDefs[pCurCmd->cmdId];
+    const LCD_CmdDef* pCmdDef = &cmdDefs[pCurCmd->cmdId];
 
     // execute command
     if (!pCmdDef->isNoop) {
@@ -242,40 +240,32 @@ uint16_t LCD_Task(uint16_t durationSinceLast) {
     return ticksUntilNextCmd;
 }
 
-LCD_Buffer* LCD_TakeBuffer() {
-    return &chBufs[(curChBuf + 1) % 2];
+char* LCD_TakeBuffer() {
+    return chBuf;
 }
 
 void LCD_PushBuffer() {
     // First, disable cursort
     LCD_ShowCursor(0, 0, LCD_CURSOR_OFF);
 
-    uint8_t nextChBuf = (curChBuf + 1) % 2;
-
-    LCD_Buffer* cb = &chBufs[curChBuf];
-    LCD_Buffer* nb = &chBufs[nextChBuf];
-
+    // Cleanup existing commands
+    LCD_ClearCommands();
+    
     uint8_t ddStartAddr = 0;
-    for (uint8_t l = 0; l < LCD_ROWS; l++) {
-        char* cr = cb->rows[l];
-        char* nr = nb->rows[l];
-        // Compare line for differences
-        for (uint8_t s = 0; s < LCD_COLS; s++) {
-            if (cr[s] == nr[s]) {
-                continue; // Char is the same
-            }
-            LCD_PushCommand(LCD_CMD_SET_DDRAM_ADDR, ddStartAddr + s);
-            do {
-                LCD_PushCommand(LCD_CMD_WRITE_DATA, nr[s]);
-                s++;
-            } while (s < LCD_COLS && cr[s] != nr[s]);
+    char* pCh = chBuf;
+    for (uint8_t l = LCD_ROWS; l; l--) {
+        LCD_PushCommand(LCD_CMD_SET_DDRAM_ADDR, ddStartAddr);
+
+        for (uint8_t s = LCD_COLS; s; s--) {
+            LCD_PushCommand(LCD_CMD_WRITE_DATA, *pCh);
+            pCh++;
         }
 
         // Goto next line in lcd memory
         ddStartAddr += 0x40;
     }
-
-    curChBuf = nextChBuf;
+    
+    memset(chBuf, ' ', sizeof(chBuf));
 }
 
 void LCD_ShowCursor(uint8_t row, uint8_t col, uint8_t mode) {
@@ -334,4 +324,18 @@ void LCD_ClockCommand() {
 
 void LCD_SendMcpBuf() {
     MCP_Send(0, MCP_OLAT, MCP_WRITE, (uint8_t*) & mcpBuf, 2);
+}
+
+void LCD_ClearCommands() {
+    LCD_Command* p;
+    while (curCmd != lastCmd) {
+        p = &cmds[curCmd];
+        if (p->cmdId != LCD_CMD_WRITE_DATA && p->cmdId != LCD_CMD_SET_DDRAM_ADDR) {
+            break;
+        }
+        curCmd++;
+        if (curCmd >= LCD_N_COMMANDS) {
+            curCmd = 0;
+        }
+    }
 }

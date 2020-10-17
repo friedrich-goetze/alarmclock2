@@ -1571,7 +1571,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="EUSART1" name="baudRateErrorLabel"/>
-         <value>Error: 0.644 %</value>
+         <value>Error: -0.080 %</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.OptionKey" moduleName="Pin Module" registerAlias="IOCBN" settingAlias="IOCBN6" alias="disabled"/>
@@ -1615,7 +1615,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.RegisterKey" moduleName="EUSART1" registerAlias="SPBRGL"/>
-         <value>68</value>
+         <value>138</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.OptionKey" moduleName="WWDT" registerAlias="WDTCON0" settingAlias="WDTPS" alias="1:524288"/>
@@ -6883,7 +6883,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="EUSART1" name="baudRateComboBox"/>
-         <value>115200</value>
+         <value>57600</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.RegisterKey" moduleName="Pin Module" registerAlias="SMT1WINPPS"/>
@@ -8635,7 +8635,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="EUSART1" registerAlias="SPBRGL" settingAlias="SPBRGL"/>
-         <value>68</value>
+         <value>138</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.OptionKey" moduleName="TMR1" registerAlias="TCLK" settingAlias="TMRCS" alias="CLC4OUT"/>
@@ -9109,7 +9109,7 @@
       </entry>
       <entry>
          <file>mcc_generated_files/eusart1.c</file>
-         <hash>63eb324b4ae9ed3eedb4bab40ba1c27bcea2c4faea1976142d61bd2db99ac649</hash>
+         <hash>f9456c935c82a26bbd95e1c7a5a3e5216df6bfcb9371fe186cae3c83366af4ec</hash>
       </entry>
       <entry>
          <file>mcc_generated_files/device_config.c</file>
