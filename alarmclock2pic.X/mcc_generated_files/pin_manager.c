@@ -101,23 +101,23 @@ void PIN_MANAGER_Initialize(void)
     /**
     TRISx registers
     */
-    TRISA = 0xDF;
-    TRISB = 0xDF;
-    TRISC = 0x8B;
+    TRISA = 0x01;
+    TRISB = 0x1E;
+    TRISC = 0x88;
 
     /**
     ANSELx registers
     */
     ANSELC = 0x00;
     ANSELB = 0x00;
-    ANSELA = 0x1D;
+    ANSELA = 0x00;
 
     /**
     WPUx registers
     */
     WPUE = 0x00;
     WPUB = 0x00;
-    WPUA = 0x1C;
+    WPUA = 0x00;
     WPUC = 0x00;
 
     /**
@@ -185,6 +185,7 @@ void PIN_MANAGER_Initialize(void)
 	
     SSP1CLKPPS = 0x12;   //RC2->MSSP1:SCK1;    
     RX1PPS = 0x17;   //RC7->EUSART1:RX1;    
+    RB0PPS = 0x0B;   //RB0->PWM3:PWM3OUT;    
     RC4PPS = 0x14;   //RC4->MSSP1:SDO1;    
     RC2PPS = 0x13;   //RC2->MSSP1:SCK1;    
     RC6PPS = 0x0D;   //RC6->EUSART1:TX1;    

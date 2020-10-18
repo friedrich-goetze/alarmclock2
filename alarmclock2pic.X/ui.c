@@ -8,6 +8,7 @@
 #include "lcd_driver.h"
 #include "mcc_generated_files/tmr0.h"
 #include "persistance.h"
+#include "mcc_generated_files/pin_manager.h"
 
 #define UI_HOME 0
 #define UI_SET_BIT (0b1)
@@ -27,7 +28,7 @@ typedef struct __UI_Data {
     uint8_t setStep;
     SimpleTime dayTime;
     SimpleTime almTime;
-
+    bool isAlmOffSwitchActive;
 } UI_Data;
 
 #define TIMEOUT ((uint16_t)0x7500)
@@ -35,6 +36,7 @@ uint16_t lastPressMillis = 0;
 
 UI_Data ui;
 struct tm rtcc;
+bool isBacklightOn = false;
 
 // Used for times which aren't shown anyway.
 const SimpleTime dummyTime = {.hours = 0, .minutes = 0};
@@ -42,6 +44,8 @@ const SimpleTime dummyTime = {.hours = 0, .minutes = 0};
 void UI_Init() {
     ui.mode = UI_HOME;
     ui.setStep = UI_SETSTEP_SELECT;
+    isBacklightOn = false;
+    LCD_EnableBgLed(false);
 }
 
 uint8_t UI_IncDecRanged(bool inc, uint8_t value, uint8_t amount, uint8_t max);
@@ -56,6 +60,9 @@ uint16_t UI_Update(uint16_t ticksSinceLastCall) {
 
     // Create a copy to check, if anything has changed that requires a redraw.
     UI_Data newUI = ui;
+
+    // Simple assignments
+    newUI.isAlmOffSwitchActive = ALM_IN_PORT;
 
     // Active alarm can disable interactive ui.
     // After disableing alarm, go back to home.
@@ -122,6 +129,9 @@ uint16_t UI_Update(uint16_t ticksSinceLastCall) {
 
                     PERSISTANCE_WriteState();
 
+                    // Always disable alarm
+                    ALARM_SetEnabled(false);
+
                     newUI.mode = UI_HOME;
                 }
 
@@ -162,18 +172,22 @@ uint16_t UI_Update(uint16_t ticksSinceLastCall) {
         }
     }
 
+    // Timeout handling
+    if (BTN_IsButtonPressed()) {
+        lastPressMillis = curMillis;
+        isBacklightOn = true;
+    } else if (curMillis - lastPressMillis > TIMEOUT) {
+        newUI.mode = UI_HOME;
+        isBacklightOn = false;
+    }
+    LCD_EnableBgLed(isBacklightOn);
+
     // Not in set-mode, update daytime and alarm-time
-    if (newUI.mode == UI_HOME) {
+    if (!(newUI.mode & UI_SET_BIT)) {
         SIMPLETIME_FromTime(&rtcc, &newUI.dayTime);
         ALARM_GetTime(&newUI.almTime);
-
-    } else if (BTN_IsButtonPressed()) {
-        // Reset Timeout
-        lastPressMillis = curMillis;
-    } else if (curMillis - lastPressMillis > TIMEOUT) {
-        // Timeout
-        newUI.mode = UI_HOME;
     }
+
     // Fix any severe errors which shouldn't exist
     newUI.dayTime.hours %= 24;
     newUI.dayTime.minutes %= 60;
@@ -190,31 +204,41 @@ uint16_t UI_Update(uint16_t ticksSinceLastCall) {
 
         // Layout
         //     0123456789ABCDEF
-        // 0       hh:mm    SET
-        // 1   ALM hh:mm    SET
+        // 0   TIME  hh:mm  SET
+        // 1   ALARM hh:mm  SET
+
+        // Time Text
+        memcpy(lcd + 0x0, "TIME", 4);
 
         // Daytime
-        SIMPLETIME_WriteStr(&newUI.dayTime, lcd + 0x04);
+        SIMPLETIME_WriteStr(&newUI.dayTime, lcd + 0x06);
 
         // Time Set Text
         if (newUI.mode == UI_SET_TIME) {
             memcpy(lcd + 0x0D, "SET", 3);
         }
 
+        // Alarm off switch indicator
+        if (newUI.mode == UI_HOME && newUI.isAlmOffSwitchActive) {
+            memcpy(lcd + 0x1F, "x", 1);
+        }
+
         // Alm Text
-        memcpy(lcd + 0x10, "ALM", 3);
+        memcpy(lcd + 0x10, "ALARM", 5);
 
         // Show alarm time if in set mode or alarm is enabled
-        if (newUI.mode == UI_ENABLE_ALM) {
+        if (newUI.mode == UI_ALARM_ACTIVE) {
+            memcpy(lcd + 0x16, "ACTIVE", 6);
+        } else if (newUI.mode == UI_ENABLE_ALM) {
             if (isAlarmEnabled) {
-                memcpy(lcd + 0x14, "Disable", 7);
+                memcpy(lcd + 0x16, "Disable", 7);
             } else {
-                memcpy(lcd + 0x14, "Enable", 6);
+                memcpy(lcd + 0x16, "Enable", 6);
             }
         } else if (isAlarmEnabled || (newUI.mode & UI_SET_BIT)) {
-            SIMPLETIME_WriteStr(&newUI.almTime, lcd + 0x14);
+            SIMPLETIME_WriteStr(&newUI.almTime, lcd + 0x16);
         } else {
-            memcpy(lcd + 0x14, "Off", 3);
+            memcpy(lcd + 0x16, "Off", 3);
         }
 
         // Alarm Set Text
@@ -231,13 +255,13 @@ uint16_t UI_Update(uint16_t ticksSinceLastCall) {
             uint8_t pos = 0; // 0 also means no cursor
             switch (newUI.setStep) {
                 case UI_SETSTEP_HOURS:
-                    pos = 5;
-                    break;
-                case UI_SETSTEP_TEN_MINUTES:
                     pos = 7;
                     break;
+                case UI_SETSTEP_TEN_MINUTES:
+                    pos = 9;
+                    break;
                 case UI_SETSTEP_MINUTES:
-                    pos = 8;
+                    pos = 10;
                     break;
             }
 
@@ -253,7 +277,7 @@ uint16_t UI_Update(uint16_t ticksSinceLastCall) {
         } else if (newUI.mode == UI_ENABLE_ALM) {
             LCD_ShowCursor(
                     1,
-                    0x4,
+                    0x6,
                     LCD_CURSOR_SOLID
                     );
         } else {
@@ -262,7 +286,7 @@ uint16_t UI_Update(uint16_t ticksSinceLastCall) {
     }
 
     // Wait forever if is in home, otherwise wait a second to re-check timeout.
-    return (newUI.mode == UI_HOME) ? 0xFFFF : 0x7FFF;
+    return (newUI.mode == UI_HOME && !isBacklightOn) ? 0xFFFF : 0x7FFF;
 }
 
 uint8_t UI_IncDecRanged(bool inc, uint8_t value, uint8_t amount, uint8_t max) {

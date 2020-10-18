@@ -53,7 +53,8 @@ void SYSTEM_Initialize(void)
     SPI1_Initialize();
     PIN_MANAGER_Initialize();
     OSCILLATOR_Initialize();
-    ADCC_Initialize();
+    TMR4_Initialize();
+    PWM3_Initialize();
     TMR1_Initialize();
     RTCC_Initialize();
     TMR0_Initialize();

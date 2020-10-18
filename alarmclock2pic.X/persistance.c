@@ -43,8 +43,6 @@ PERSISTANCE_WriteState() {
     DATAEE_WriteByte(EE_ADDR + 1, daytime.minutes);
     DATAEE_WriteByte(EE_ADDR + 2, almtime.hours);
     DATAEE_WriteByte(EE_ADDR + 3, almtime.minutes);
-
-    printf("W\n");
 }
 
 PERSISTANCE_LoadState() {

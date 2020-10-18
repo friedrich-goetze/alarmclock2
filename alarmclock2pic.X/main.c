@@ -11,6 +11,7 @@
 #include "persistance.h"
 
 void main(void) {
+    
     // initialize the device
     SYSTEM_Initialize();
 
@@ -32,13 +33,12 @@ void main(void) {
     printf("Hello!\n");
 
     //    LCD_Init();
-    PERSISTANCE_Init();
     LCD_Init();
     BTN_Init();
     ALARM_Init();
     UI_Init();
     SCHEDULE_Init();
-
+    PERSISTANCE_Init();
 
 
     //    SCHEDULE_AddTask(LCD_Task);

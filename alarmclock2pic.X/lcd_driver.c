@@ -309,8 +309,10 @@ void LCD_ShowCursor(uint8_t row, uint8_t col, uint8_t mode) {
 }
 
 void LCD_EnableBgLed(bool enable) {
-    mcpBuf.enableBg = enable ? true : false;
-    LCD_SendMcpBuf();
+    if (mcpBuf.enableBg != enable) {
+        mcpBuf.enableBg = enable;
+        LCD_SendMcpBuf();
+    }
 }
 
 void LCD_Clear() {
