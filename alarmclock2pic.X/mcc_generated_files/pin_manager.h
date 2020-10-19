@@ -224,85 +224,85 @@
 #define RB0_SetAnalogMode()         do { ANSELBbits.ANSB0 = 1; } while(0)
 #define RB0_SetDigitalMode()        do { ANSELBbits.ANSB0 = 0; } while(0)
 
-// get/set BTN_MODE aliases
-#define BTN_MODE_TRIS                 TRISBbits.TRISB1
-#define BTN_MODE_LAT                  LATBbits.LATB1
-#define BTN_MODE_PORT                 PORTBbits.RB1
-#define BTN_MODE_WPU                  WPUBbits.WPUB1
-#define BTN_MODE_OD                   ODCONBbits.ODCB1
-#define BTN_MODE_ANS                  ANSELBbits.ANSB1
-#define BTN_MODE_SetHigh()            do { LATBbits.LATB1 = 1; } while(0)
-#define BTN_MODE_SetLow()             do { LATBbits.LATB1 = 0; } while(0)
-#define BTN_MODE_Toggle()             do { LATBbits.LATB1 = ~LATBbits.LATB1; } while(0)
-#define BTN_MODE_GetValue()           PORTBbits.RB1
-#define BTN_MODE_SetDigitalInput()    do { TRISBbits.TRISB1 = 1; } while(0)
-#define BTN_MODE_SetDigitalOutput()   do { TRISBbits.TRISB1 = 0; } while(0)
-#define BTN_MODE_SetPullup()          do { WPUBbits.WPUB1 = 1; } while(0)
-#define BTN_MODE_ResetPullup()        do { WPUBbits.WPUB1 = 0; } while(0)
-#define BTN_MODE_SetPushPull()        do { ODCONBbits.ODCB1 = 0; } while(0)
-#define BTN_MODE_SetOpenDrain()       do { ODCONBbits.ODCB1 = 1; } while(0)
-#define BTN_MODE_SetAnalogMode()      do { ANSELBbits.ANSB1 = 1; } while(0)
-#define BTN_MODE_SetDigitalMode()     do { ANSELBbits.ANSB1 = 0; } while(0)
-
-// get/set BTN_SET aliases
-#define BTN_SET_TRIS                 TRISBbits.TRISB2
-#define BTN_SET_LAT                  LATBbits.LATB2
-#define BTN_SET_PORT                 PORTBbits.RB2
-#define BTN_SET_WPU                  WPUBbits.WPUB2
-#define BTN_SET_OD                   ODCONBbits.ODCB2
-#define BTN_SET_ANS                  ANSELBbits.ANSB2
-#define BTN_SET_SetHigh()            do { LATBbits.LATB2 = 1; } while(0)
-#define BTN_SET_SetLow()             do { LATBbits.LATB2 = 0; } while(0)
-#define BTN_SET_Toggle()             do { LATBbits.LATB2 = ~LATBbits.LATB2; } while(0)
-#define BTN_SET_GetValue()           PORTBbits.RB2
-#define BTN_SET_SetDigitalInput()    do { TRISBbits.TRISB2 = 1; } while(0)
-#define BTN_SET_SetDigitalOutput()   do { TRISBbits.TRISB2 = 0; } while(0)
-#define BTN_SET_SetPullup()          do { WPUBbits.WPUB2 = 1; } while(0)
-#define BTN_SET_ResetPullup()        do { WPUBbits.WPUB2 = 0; } while(0)
-#define BTN_SET_SetPushPull()        do { ODCONBbits.ODCB2 = 0; } while(0)
-#define BTN_SET_SetOpenDrain()       do { ODCONBbits.ODCB2 = 1; } while(0)
-#define BTN_SET_SetAnalogMode()      do { ANSELBbits.ANSB2 = 1; } while(0)
-#define BTN_SET_SetDigitalMode()     do { ANSELBbits.ANSB2 = 0; } while(0)
+// get/set BTN_DEC aliases
+#define BTN_DEC_TRIS                 TRISBbits.TRISB1
+#define BTN_DEC_LAT                  LATBbits.LATB1
+#define BTN_DEC_PORT                 PORTBbits.RB1
+#define BTN_DEC_WPU                  WPUBbits.WPUB1
+#define BTN_DEC_OD                   ODCONBbits.ODCB1
+#define BTN_DEC_ANS                  ANSELBbits.ANSB1
+#define BTN_DEC_SetHigh()            do { LATBbits.LATB1 = 1; } while(0)
+#define BTN_DEC_SetLow()             do { LATBbits.LATB1 = 0; } while(0)
+#define BTN_DEC_Toggle()             do { LATBbits.LATB1 = ~LATBbits.LATB1; } while(0)
+#define BTN_DEC_GetValue()           PORTBbits.RB1
+#define BTN_DEC_SetDigitalInput()    do { TRISBbits.TRISB1 = 1; } while(0)
+#define BTN_DEC_SetDigitalOutput()   do { TRISBbits.TRISB1 = 0; } while(0)
+#define BTN_DEC_SetPullup()          do { WPUBbits.WPUB1 = 1; } while(0)
+#define BTN_DEC_ResetPullup()        do { WPUBbits.WPUB1 = 0; } while(0)
+#define BTN_DEC_SetPushPull()        do { ODCONBbits.ODCB1 = 0; } while(0)
+#define BTN_DEC_SetOpenDrain()       do { ODCONBbits.ODCB1 = 1; } while(0)
+#define BTN_DEC_SetAnalogMode()      do { ANSELBbits.ANSB1 = 1; } while(0)
+#define BTN_DEC_SetDigitalMode()     do { ANSELBbits.ANSB1 = 0; } while(0)
 
 // get/set BTN_INC aliases
-#define BTN_INC_TRIS                 TRISBbits.TRISB3
-#define BTN_INC_LAT                  LATBbits.LATB3
-#define BTN_INC_PORT                 PORTBbits.RB3
-#define BTN_INC_WPU                  WPUBbits.WPUB3
-#define BTN_INC_OD                   ODCONBbits.ODCB3
-#define BTN_INC_ANS                  ANSELBbits.ANSB3
-#define BTN_INC_SetHigh()            do { LATBbits.LATB3 = 1; } while(0)
-#define BTN_INC_SetLow()             do { LATBbits.LATB3 = 0; } while(0)
-#define BTN_INC_Toggle()             do { LATBbits.LATB3 = ~LATBbits.LATB3; } while(0)
-#define BTN_INC_GetValue()           PORTBbits.RB3
-#define BTN_INC_SetDigitalInput()    do { TRISBbits.TRISB3 = 1; } while(0)
-#define BTN_INC_SetDigitalOutput()   do { TRISBbits.TRISB3 = 0; } while(0)
-#define BTN_INC_SetPullup()          do { WPUBbits.WPUB3 = 1; } while(0)
-#define BTN_INC_ResetPullup()        do { WPUBbits.WPUB3 = 0; } while(0)
-#define BTN_INC_SetPushPull()        do { ODCONBbits.ODCB3 = 0; } while(0)
-#define BTN_INC_SetOpenDrain()       do { ODCONBbits.ODCB3 = 1; } while(0)
-#define BTN_INC_SetAnalogMode()      do { ANSELBbits.ANSB3 = 1; } while(0)
-#define BTN_INC_SetDigitalMode()     do { ANSELBbits.ANSB3 = 0; } while(0)
+#define BTN_INC_TRIS                 TRISBbits.TRISB2
+#define BTN_INC_LAT                  LATBbits.LATB2
+#define BTN_INC_PORT                 PORTBbits.RB2
+#define BTN_INC_WPU                  WPUBbits.WPUB2
+#define BTN_INC_OD                   ODCONBbits.ODCB2
+#define BTN_INC_ANS                  ANSELBbits.ANSB2
+#define BTN_INC_SetHigh()            do { LATBbits.LATB2 = 1; } while(0)
+#define BTN_INC_SetLow()             do { LATBbits.LATB2 = 0; } while(0)
+#define BTN_INC_Toggle()             do { LATBbits.LATB2 = ~LATBbits.LATB2; } while(0)
+#define BTN_INC_GetValue()           PORTBbits.RB2
+#define BTN_INC_SetDigitalInput()    do { TRISBbits.TRISB2 = 1; } while(0)
+#define BTN_INC_SetDigitalOutput()   do { TRISBbits.TRISB2 = 0; } while(0)
+#define BTN_INC_SetPullup()          do { WPUBbits.WPUB2 = 1; } while(0)
+#define BTN_INC_ResetPullup()        do { WPUBbits.WPUB2 = 0; } while(0)
+#define BTN_INC_SetPushPull()        do { ODCONBbits.ODCB2 = 0; } while(0)
+#define BTN_INC_SetOpenDrain()       do { ODCONBbits.ODCB2 = 1; } while(0)
+#define BTN_INC_SetAnalogMode()      do { ANSELBbits.ANSB2 = 1; } while(0)
+#define BTN_INC_SetDigitalMode()     do { ANSELBbits.ANSB2 = 0; } while(0)
 
-// get/set BTN_DEC aliases
-#define BTN_DEC_TRIS                 TRISBbits.TRISB4
-#define BTN_DEC_LAT                  LATBbits.LATB4
-#define BTN_DEC_PORT                 PORTBbits.RB4
-#define BTN_DEC_WPU                  WPUBbits.WPUB4
-#define BTN_DEC_OD                   ODCONBbits.ODCB4
-#define BTN_DEC_ANS                  ANSELBbits.ANSB4
-#define BTN_DEC_SetHigh()            do { LATBbits.LATB4 = 1; } while(0)
-#define BTN_DEC_SetLow()             do { LATBbits.LATB4 = 0; } while(0)
-#define BTN_DEC_Toggle()             do { LATBbits.LATB4 = ~LATBbits.LATB4; } while(0)
-#define BTN_DEC_GetValue()           PORTBbits.RB4
-#define BTN_DEC_SetDigitalInput()    do { TRISBbits.TRISB4 = 1; } while(0)
-#define BTN_DEC_SetDigitalOutput()   do { TRISBbits.TRISB4 = 0; } while(0)
-#define BTN_DEC_SetPullup()          do { WPUBbits.WPUB4 = 1; } while(0)
-#define BTN_DEC_ResetPullup()        do { WPUBbits.WPUB4 = 0; } while(0)
-#define BTN_DEC_SetPushPull()        do { ODCONBbits.ODCB4 = 0; } while(0)
-#define BTN_DEC_SetOpenDrain()       do { ODCONBbits.ODCB4 = 1; } while(0)
-#define BTN_DEC_SetAnalogMode()      do { ANSELBbits.ANSB4 = 1; } while(0)
-#define BTN_DEC_SetDigitalMode()     do { ANSELBbits.ANSB4 = 0; } while(0)
+// get/set BTN_SET aliases
+#define BTN_SET_TRIS                 TRISBbits.TRISB3
+#define BTN_SET_LAT                  LATBbits.LATB3
+#define BTN_SET_PORT                 PORTBbits.RB3
+#define BTN_SET_WPU                  WPUBbits.WPUB3
+#define BTN_SET_OD                   ODCONBbits.ODCB3
+#define BTN_SET_ANS                  ANSELBbits.ANSB3
+#define BTN_SET_SetHigh()            do { LATBbits.LATB3 = 1; } while(0)
+#define BTN_SET_SetLow()             do { LATBbits.LATB3 = 0; } while(0)
+#define BTN_SET_Toggle()             do { LATBbits.LATB3 = ~LATBbits.LATB3; } while(0)
+#define BTN_SET_GetValue()           PORTBbits.RB3
+#define BTN_SET_SetDigitalInput()    do { TRISBbits.TRISB3 = 1; } while(0)
+#define BTN_SET_SetDigitalOutput()   do { TRISBbits.TRISB3 = 0; } while(0)
+#define BTN_SET_SetPullup()          do { WPUBbits.WPUB3 = 1; } while(0)
+#define BTN_SET_ResetPullup()        do { WPUBbits.WPUB3 = 0; } while(0)
+#define BTN_SET_SetPushPull()        do { ODCONBbits.ODCB3 = 0; } while(0)
+#define BTN_SET_SetOpenDrain()       do { ODCONBbits.ODCB3 = 1; } while(0)
+#define BTN_SET_SetAnalogMode()      do { ANSELBbits.ANSB3 = 1; } while(0)
+#define BTN_SET_SetDigitalMode()     do { ANSELBbits.ANSB3 = 0; } while(0)
+
+// get/set BTN_MODE aliases
+#define BTN_MODE_TRIS                 TRISBbits.TRISB4
+#define BTN_MODE_LAT                  LATBbits.LATB4
+#define BTN_MODE_PORT                 PORTBbits.RB4
+#define BTN_MODE_WPU                  WPUBbits.WPUB4
+#define BTN_MODE_OD                   ODCONBbits.ODCB4
+#define BTN_MODE_ANS                  ANSELBbits.ANSB4
+#define BTN_MODE_SetHigh()            do { LATBbits.LATB4 = 1; } while(0)
+#define BTN_MODE_SetLow()             do { LATBbits.LATB4 = 0; } while(0)
+#define BTN_MODE_Toggle()             do { LATBbits.LATB4 = ~LATBbits.LATB4; } while(0)
+#define BTN_MODE_GetValue()           PORTBbits.RB4
+#define BTN_MODE_SetDigitalInput()    do { TRISBbits.TRISB4 = 1; } while(0)
+#define BTN_MODE_SetDigitalOutput()   do { TRISBbits.TRISB4 = 0; } while(0)
+#define BTN_MODE_SetPullup()          do { WPUBbits.WPUB4 = 1; } while(0)
+#define BTN_MODE_ResetPullup()        do { WPUBbits.WPUB4 = 0; } while(0)
+#define BTN_MODE_SetPushPull()        do { ODCONBbits.ODCB4 = 0; } while(0)
+#define BTN_MODE_SetOpenDrain()       do { ODCONBbits.ODCB4 = 1; } while(0)
+#define BTN_MODE_SetAnalogMode()      do { ANSELBbits.ANSB4 = 1; } while(0)
+#define BTN_MODE_SetDigitalMode()     do { ANSELBbits.ANSB4 = 0; } while(0)
 
 // get/set MCP_CS aliases
 #define MCP_CS_TRIS                 TRISBbits.TRISB5

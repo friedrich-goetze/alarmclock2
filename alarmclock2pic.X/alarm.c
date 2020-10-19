@@ -10,10 +10,10 @@
 
 
 
-#define ALARM_REPETITIONS 1
-#define DUTY_START 0x1FF
+#define ALARM_REPETITIONS 10
+#define DUTY_START 0x2FF
 #define DUTY_END 0x400
-#define DUTY_INC 0x5
+#define DUTY_INC 0x1
 #define HALF_BEEP_DURATION_MILLIS ((uint16_t)300)
 
 #define SWITCH_OFF_DELAY_MILLIS ((uint16_t)8000)

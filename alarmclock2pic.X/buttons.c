@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <string.h>
+#include <stdio.h>
 #include "buttons.h"
 #include "mcc_generated_files/pin_manager.h"
 #include "mcc_generated_files/tmr0.h"
@@ -69,7 +70,7 @@ uint16_t BTN_Update(uint16_t ticksSinceLastCall) {
         curButtonJustPressed = true;
         BTN_StartDebounce(50);
     }
-
+    
     // Can wait forever, since interrupt will wake up scheduler anyway
     return (isDebounce) ? 0 : 0xFFFF;
 }
