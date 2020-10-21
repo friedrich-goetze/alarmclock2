@@ -236,6 +236,14 @@ uint16_t LCD_Task(uint16_t durationSinceLast) {
     initTicksUntilNextCmd = pCmdDef->minTicks;
     ticksUntilNextCmd = initTicksUntilNextCmd;
 
+    // Remove this if display doesn't work anymore.
+    // Adjust wait time to what we measured.
+    if (ticksUntilNextCmd > 2) {
+        ticksUntilNextCmd -= 2;
+    } else {
+        ticksUntilNextCmd = 0;
+    }
+
     // goto next cmd
     curCmd++;
     if (curCmd >= LCD_N_COMMANDS) {
@@ -255,8 +263,6 @@ void LCD_PushBuffer() {
     LCD_ClearCommands();
 
     uint8_t ddStartAddr = 0;
-    uint8_t j;
-    uint8_t addr = 0;
     bool sendAddr = true;
 
     for (uint8_t i = 0; i < LCD_TOTAL_CHARS; i++) {
@@ -265,14 +271,10 @@ void LCD_PushBuffer() {
             continue;
         }
         if (sendAddr) {
-            addr = 0;
-            j = i;
-            while (j >= LCD_COLS) {
-                addr += 0x40;
-                j -= LCD_COLS;
-            }
-            addr += j; // Remainder
-            LCD_PushCommand(LCD_CMD_SET_DDRAM_ADDR, addr);
+            LCD_PushCommand(
+                    LCD_CMD_SET_DDRAM_ADDR,
+                    ((i / LCD_COLS) * 0x40) + (i % LCD_COLS)
+            );
             sendAddr = false;
         }
         LCD_PushCommand(LCD_CMD_WRITE_DATA, chBuf[i]);

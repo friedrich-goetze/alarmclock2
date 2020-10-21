@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include "alarm.h"
 #include "simpletime.h"
-#include "mcc_generated_files/rtcc.h"
+#include "rtc.h"
 #include "mcc_generated_files/pin_manager.h"
 #include "mcc_generated_files/pwm3.h"
 #include "mcc_generated_files/tmr0.h"
@@ -100,9 +100,7 @@ uint16_t ALARM_Update(uint16_t ticksSinceLastCall) {
         }
     } else if (isEnabled) {
         SimpleTime daytime;
-
-        RTCC_TimeGet(&rtcc);
-        SIMPLETIME_FromTime(&rtcc, &daytime);
+        RTC_GetTime(&daytime);
 
         printf("day: %u:%u alm: %u:%u\n", daytime.hours, daytime.minutes, almtime.hours, almtime.minutes);
 

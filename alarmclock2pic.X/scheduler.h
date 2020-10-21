@@ -8,13 +8,6 @@
 #include <stdint.h>
 
 void SCHEDULE_API_InitWaitTicks(void);
-uint16_t SCHEDULE_API_WaitTicks(uint16_t ticks);
-
-/** 
- * This must be called within any interrupt.
- * This function interrupts waiting.
- */
-void SCHEDULE_API_OnInterrupt(void);
 
 /**
  * Callback for task execution.

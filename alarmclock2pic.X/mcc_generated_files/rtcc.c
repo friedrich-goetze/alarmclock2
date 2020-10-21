@@ -132,13 +132,13 @@ bool RTCC_TimeGet(struct tm *currentTime)
     if(RTCCONbits.RTCSYNC) return false;
 
     //get year 
-    currentTime->tm_year    = ConcatInt(20, GetDecimalValue(YEAR));
+//    currentTime->tm_year    = ConcatInt(20, GetDecimalValue(YEAR));
     //get month
-    currentTime->tm_mon     = GetDecimalValue(MONTH);
+//    currentTime->tm_mon     = GetDecimalValue(MONTH);
     // get weekday
-    currentTime->tm_wday    = GetDecimalValue(WEEKDAY);
+//    currentTime->tm_wday    = GetDecimalValue(WEEKDAY);
     //get day
-    currentTime->tm_mday    = GetDecimalValue(DAY);
+//    currentTime->tm_mday    = GetDecimalValue(DAY);
     //get hour
     currentTime->tm_hour    = GetDecimalValue(HOURS);
     //get minutes

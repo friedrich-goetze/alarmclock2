@@ -3,7 +3,7 @@
 #include "ui.h"
 #include "alarm.h"
 #include "buttons.h"
-#include "mcc_generated_files/rtcc.h"
+#include "rtc.h"
 #include "simpletime.h"
 #include "lcd_driver.h"
 #include "mcc_generated_files/tmr0.h"
@@ -35,7 +35,6 @@ typedef struct __UI_Data {
 uint16_t lastPressMillis = 0;
 
 UI_Data ui;
-struct tm rtcc;
 bool isBacklightOn = false;
 
 // Used for times which aren't shown anyway.
@@ -56,7 +55,6 @@ uint16_t UI_Update(uint16_t ticksSinceLastCall) {
     bool isAlarmEnabled = ALARM_IsEnabled();
     uint8_t btn = BTN_GetDownButton();
     uint16_t curMillis = TMR0_ReadTimer();
-    RTCC_TimeGet(&rtcc);
 
     // Create a copy to check, if anything has changed that requires a redraw.
     UI_Data newUI = ui;
@@ -119,8 +117,7 @@ uint16_t UI_Update(uint16_t ticksSinceLastCall) {
                     // Last Step finished, apply changes
                     switch (newUI.mode) {
                         case UI_SET_TIME:
-                            SIMPLETIME_ToTime(&newUI.dayTime, &rtcc);
-                            RTCC_TimeSet(&rtcc);
+                            RTC_SetTime(&newUI.dayTime);
                             break;
                         case UI_SET_ALM:
                             ALARM_SetTime(&newUI.almTime);
@@ -184,7 +181,7 @@ uint16_t UI_Update(uint16_t ticksSinceLastCall) {
 
     // Not in set-mode, update daytime and alarm-time
     if (!(newUI.mode & UI_SET_BIT)) {
-        SIMPLETIME_FromTime(&rtcc, &newUI.dayTime);
+        RTC_GetTime(&newUI.dayTime);
         ALARM_GetTime(&newUI.almTime);
     }
 

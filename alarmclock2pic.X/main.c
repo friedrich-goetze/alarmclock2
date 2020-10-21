@@ -7,6 +7,7 @@
 #include "mcp23s17.h"
 #include "buttons.h"
 #include "ui.h"
+#include "rtc.h"
 #include "alarm.h"
 #include "persistance.h"
 
@@ -33,6 +34,7 @@ void main(void) {
     printf("Hello!\n");
 
     //    LCD_Init();
+    RTC_Init();
     LCD_Init();
     BTN_Init();
     ALARM_Init();
@@ -42,6 +44,7 @@ void main(void) {
 
 
     //    SCHEDULE_AddTask(LCD_Task);
+    SCHEDULE_AddTask(RTC_Update);
     SCHEDULE_AddTask(BTN_Update);
     SCHEDULE_AddTask(ALARM_Update);
     SCHEDULE_AddTask(UI_Update);
